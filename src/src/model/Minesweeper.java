@@ -1,5 +1,8 @@
 package model;
 
+import utilities.Validator;
+import utilities.constants.ErrorMessages;
+
 public class Minesweeper extends AbstractMineSweeper {
     private int width;
     private int height;
@@ -29,7 +32,11 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void setGameBoard(int row, int col) {
-        // TODO: validate parameters
+        boolean isBordDimensionsAreNegative = Validator.IsPositive(row) && Validator.IsPositive(col);
+
+        if (isBordDimensionsAreNegative) {
+            throw new NegativeArraySizeException(ErrorMessages.NEGATIVE_NUMBER);
+        }
 
         this.gameBoard = new int[row][col];
     }

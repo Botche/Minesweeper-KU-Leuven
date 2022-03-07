@@ -1,4 +1,4 @@
-package model;
+package model.tiles;
 
 import notifier.ITileStateNotifier;
 import test.TestableTile;

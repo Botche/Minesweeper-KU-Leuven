@@ -1,5 +1,6 @@
 package model;
 
+import model.tiles.AbstractTile;
 import org.jetbrains.annotations.NotNull;
 import utilities.constants.Common;
 import utilities.Validator;

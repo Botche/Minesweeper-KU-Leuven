@@ -205,8 +205,9 @@ public class Minesweeper extends AbstractMineSweeper {
             int colIndex = randomGenerator.nextInt(this.colBoardDimension);
 
             AbstractTile tile = this.gameBoard[rowIndex][colIndex];
+            String tileName = tile.getClass().getSimpleName();
 
-            if (tile.getClass().toString().equals("Explosive")) {
+            if (tileName.equals("Explosive")) {
                 continue;
             }
 

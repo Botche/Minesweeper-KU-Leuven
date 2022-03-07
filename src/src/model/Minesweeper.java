@@ -1,6 +1,8 @@
 package model;
 
 import model.tiles.AbstractTile;
+import model.tiles.Empty;
+import model.tiles.Explosive;
 import org.jetbrains.annotations.NotNull;
 import utilities.constants.Common;
 import utilities.Validator;
@@ -10,7 +12,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private int width;
     private int height;
     private int explosionCount;
-    private int[][] gameBoard;
+    private AbstractTile[][] gameBoard;
 
     @Override
     public int getWidth() {
@@ -41,7 +43,7 @@ public class Minesweeper extends AbstractMineSweeper {
             throw new NegativeArraySizeException(ErrorMessages.NEGATIVE_NUMBER);
         }
 
-        this.gameBoard = new int[row][col];
+        this.gameBoard = new AbstractTile[row][col];
     }
 
     @Override
@@ -66,7 +68,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void setWorld(AbstractTile[][] world) {
-
+        
     }
 
     @Override
@@ -91,12 +93,16 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public AbstractTile generateEmptyTile() {
-        return null;
+        Empty emptyTile = new Empty();
+
+        return emptyTile;
     }
 
     @Override
     public AbstractTile generateExplosiveTile() {
-        return null;
+        Explosive explosiveTile = new Explosive();
+
+        return explosiveTile;
     }
 
     private void initializeGameBoard(@NotNull Difficulty difficulty) {

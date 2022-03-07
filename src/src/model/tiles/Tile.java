@@ -40,12 +40,6 @@ public abstract class Tile extends AbstractTile {
         this.isOpened = isOpened;
     }
 
-    public void setNotifier(ITileStateNotifier notifier) {
-        // TODO: check if it is null
-
-        this.viewNotifier = notifier;
-    }
-
     @Override
     public boolean open() {
         this.setIsOpened(true);

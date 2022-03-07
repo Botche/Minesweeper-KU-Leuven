@@ -80,18 +80,24 @@ public class Minesweeper extends AbstractMineSweeper {
     public void toggleFlag(int x, int y) {
         AbstractTile tile = this.gameBoard[x][y];
 
-        if (tile.isFlagged()) {
-            tile.unflag();
+        if (tile.isOpened() == false) {
+            if (tile.isFlagged()) {
+                tile.unflag();
+                this.viewNotifier.notifyUnflagged(x, y);
 
-            return;
+                return;
+            }
+
+            tile.flag();
+            this.viewNotifier.notifyFlagged(x, y);
         }
-
-        tile.flag();
     }
 
     @Override
     public AbstractTile getTile(int x, int y) {
-        return null;
+        AbstractTile tile = this.gameBoard[x][y];
+
+        return tile;
     }
 
     @Override
@@ -105,6 +111,13 @@ public class Minesweeper extends AbstractMineSweeper {
 
         if (tile.isOpened() == false) {
             tile.open();
+
+            if (tile.isExplosive()) {
+                this.viewNotifier.notifyExploded(x, y);
+                this.viewNotifier.notifyGameLost();
+            } else {
+                this.viewNotifier.notifyOpened(x, y, 0);
+            }
         }
     }
 
@@ -114,6 +127,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
         if (tile.isOpened() == false) {
             tile.flag();
+
+            this.viewNotifier.notifyFlagged(x, y);
         }
     }
 
@@ -123,6 +138,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
         if (tile.isOpened() == false) {
             tile.unflag();
+
+            this.viewNotifier.notifyUnflagged(x, y);
         }
     }
 

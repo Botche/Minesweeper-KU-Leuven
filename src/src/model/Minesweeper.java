@@ -1,7 +1,7 @@
 package model;
 
 import org.jetbrains.annotations.NotNull;
-import utilities.Constants;
+import utilities.constants.Common;
 import utilities.Validator;
 import utilities.constants.ErrorMessages;
 
@@ -100,9 +100,9 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private void initializeGameBoard(@NotNull Difficulty difficulty) {
         switch (difficulty) {
-            case EASY -> this.setGameBoard(Constants.EASY_BORD_DIMENSIONS[0], Constants.EASY_BORD_DIMENSIONS[1]);
-            case MEDIUM -> this.setGameBoard(Constants.MEDIUM_BORD_DIMENSIONS[0], Constants.MEDIUM_BORD_DIMENSIONS[1]);
-            case HARD -> this.setGameBoard(Constants.HARD_BORD_DIMENSIONS[0], Constants.HARD_BORD_DIMENSIONS[1]);
+            case EASY -> this.setGameBoard(Common.EASY_BORD_DIMENSIONS[0], Common.EASY_BORD_DIMENSIONS[1]);
+            case MEDIUM -> this.setGameBoard(Common.MEDIUM_BORD_DIMENSIONS[0], Common.MEDIUM_BORD_DIMENSIONS[1]);
+            case HARD -> this.setGameBoard(Common.HARD_BORD_DIMENSIONS[0], Common.HARD_BORD_DIMENSIONS[1]);
         }
     }
 

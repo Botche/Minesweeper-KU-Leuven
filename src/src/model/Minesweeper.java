@@ -1,14 +1,37 @@
 package model;
 
 public class Minesweeper extends AbstractMineSweeper {
+    private int width;
+    private int height;
+    private int explosionCount;
+    private int[][] gameBoard;
+
     @Override
     public int getWidth() {
-        return 0;
+        return this.width;
+    }
+
+    private void setWidth(int width) {
+        this.width = width;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return this.height;
+    }
+
+    private void setHeight(int height) {
+        this.height = height;
+    }
+
+    private void setExplosionCount(int explosionCount) {
+        this.explosionCount = explosionCount;
+    }
+
+    private void setGameBoard(int row, int col) {
+        // TODO: validate parameters
+
+        this.gameBoard = new int[row][col];
     }
 
     @Override

@@ -13,6 +13,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private int height;
     private int countOfMines;
     private AbstractTile[][] gameBoard;
+    private boolean isFirstTimeRuleEnabled;
 
     @Override
     public int getWidth() {
@@ -34,6 +35,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private void setCountOfMines(int countOfMines) {
         this.countOfMines = countOfMines;
+    }
+
+    private void setFirstTimeRuleEnabled(boolean firstTimeRuleEnabled) {
+        this.isFirstTimeRuleEnabled = firstTimeRuleEnabled;
     }
 
     private void setGameBoard(int row, int col) {
@@ -66,7 +71,15 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void toggleFlag(int x, int y) {
+        AbstractTile tile = this.gameBoard[x][y];
 
+        if (tile.isFlagged()) {
+            tile.unflag();
+
+            return;
+        }
+
+        tile.flag();
     }
 
     @Override
@@ -81,22 +94,34 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void open(int x, int y) {
+        AbstractTile tile = this.gameBoard[x][y];
 
+        if (tile.isOpened() == false) {
+            tile.open();
+        }
     }
 
     @Override
     public void flag(int x, int y) {
+        AbstractTile tile = this.gameBoard[x][y];
 
+        if (tile.isOpened() == false) {
+            tile.flag();
+        }
     }
 
     @Override
     public void unflag(int x, int y) {
+        AbstractTile tile = this.gameBoard[x][y];
 
+        if (tile.isOpened() == false) {
+            tile.unflag();
+        }
     }
 
     @Override
     public void deactivateFirstTileRule() {
-
+        this.setFirstTimeRuleEnabled(false);
     }
 
     @Override

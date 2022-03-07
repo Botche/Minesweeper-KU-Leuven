@@ -16,9 +16,17 @@ public class Empty extends AbstractTile {
         return this.isFlagged;
     }
 
+    private void setIsFlagged(boolean isFlagged) {
+        this.isFlagged = isFlagged;
+    }
+
     @Override
     public boolean isExplosive() {
         return this.isExplosive;
+    }
+
+    private void setIsExplosive(boolean isExplosive) {
+        this.isExplosive = isExplosive;
     }
 
     @Override
@@ -26,18 +34,24 @@ public class Empty extends AbstractTile {
         return this.isOpened;
     }
 
+    private void setIsOpened(boolean isOpened) {
+        this.isOpened = isOpened;
+    }
+
     @Override
     public boolean open() {
-        return false;
+        this.setIsOpened(true);
+
+        return this.isOpened();
     }
 
     @Override
     public void flag() {
-
+        this.setIsFlagged(true);
     }
 
     @Override
     public void unflag() {
-
+        this.setIsFlagged(false);
     }
 }

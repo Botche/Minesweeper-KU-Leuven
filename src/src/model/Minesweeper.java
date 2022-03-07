@@ -1,5 +1,8 @@
 package model;
 
+import org.jetbrains.annotations.NotNull;
+import utilities.Constants;
+
 public class Minesweeper extends AbstractMineSweeper {
     private int width;
     private int height;
@@ -36,12 +39,12 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void startNewGame(Difficulty level) {
-
+        initializeGameBoard(level);
     }
 
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
-
+        initializeGameBoard(row, col);
     }
 
     @Override
@@ -87,5 +90,17 @@ public class Minesweeper extends AbstractMineSweeper {
     @Override
     public AbstractTile generateExplosiveTile() {
         return null;
+    }
+
+    private void initializeGameBoard(@NotNull Difficulty difficulty) {
+        switch (difficulty) {
+            case EASY -> this.setGameBoard(Constants.EASY_BORD_DIMENSIONS[0], Constants.EASY_BORD_DIMENSIONS[1]);
+            case MEDIUM -> this.setGameBoard(Constants.MEDIUM_BORD_DIMENSIONS[0], Constants.MEDIUM_BORD_DIMENSIONS[1]);
+            case HARD -> this.setGameBoard(Constants.HARD_BORD_DIMENSIONS[0], Constants.HARD_BORD_DIMENSIONS[1]);
+        }
+    }
+
+    private void initializeGameBoard(int row, int col) {
+        this.setGameBoard(row, col);
     }
 }

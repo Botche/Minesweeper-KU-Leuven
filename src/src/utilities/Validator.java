@@ -9,7 +9,7 @@ public final class Validator {
     public static boolean IsPositive(int number) {
         boolean isPositive = true;
 
-        if (number > 0) {
+        if (number < 0) {
             isPositive = false;
         }
 

@@ -11,7 +11,7 @@ import utilities.constants.ErrorMessages;
 public class Minesweeper extends AbstractMineSweeper {
     private int width;
     private int height;
-    private int explosionCount;
+    private int countOfMines;
     private AbstractTile[][] gameBoard;
 
     @Override
@@ -32,8 +32,8 @@ public class Minesweeper extends AbstractMineSweeper {
         this.height = height;
     }
 
-    private void setExplosionCount(int explosionCount) {
-        this.explosionCount = explosionCount;
+    private void setCountOfMines(int countOfMines) {
+        this.countOfMines = countOfMines;
     }
 
     private void setGameBoard(int row, int col) {
@@ -60,7 +60,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
-        this.initializeGameBoard(row, col);
+        this.initializeGameBoard(row, col, explosionCount);
         this.fillGameBoard();
     }
 
@@ -114,15 +114,37 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void initializeGameBoard(@NotNull Difficulty difficulty) {
-        switch (difficulty) {
-            case EASY -> this.setGameBoard(Common.EASY_BORD_DIMENSIONS[0], Common.EASY_BORD_DIMENSIONS[1]);
-            case MEDIUM -> this.setGameBoard(Common.MEDIUM_BORD_DIMENSIONS[0], Common.MEDIUM_BORD_DIMENSIONS[1]);
-            case HARD -> this.setGameBoard(Common.HARD_BORD_DIMENSIONS[0], Common.HARD_BORD_DIMENSIONS[1]);
+        int explosionCount = 0;
+        int rowBoardDimension = 0;
+        int colBoardDimension = 0;
+
+        switch(difficulty) {
+            case EASY:
+                rowBoardDimension = Common.EASY_BORD_DIMENSIONS[0];
+                colBoardDimension = Common.EASY_BORD_DIMENSIONS[1];
+                explosionCount = Common.EASY_BORD_COUNT_OF_MINES;
+                break;
+            case MEDIUM:
+                rowBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[0];
+                colBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[1];
+                explosionCount = Common.MEDIUM_BORD_COUNT_OF_MINES;
+                break;
+            case HARD:
+                rowBoardDimension = Common.HARD_BORD_DIMENSIONS[0];
+                colBoardDimension = Common.HARD_BORD_DIMENSIONS[1];
+                explosionCount = Common.HARD_BORD_COUNT_OF_MINES;
+                break;
         }
+
+        this.setGameBoard(rowBoardDimension, colBoardDimension);
+        this.setCountOfMines(explosionCount);
+        this.fillGameBoard();
     }
 
-    private void initializeGameBoard(int row, int col) {
+    private void initializeGameBoard(int row, int col, int explosionCount) {
         this.setGameBoard(row, col);
+        this.setCountOfMines(explosionCount);
+        this.fillGameBoard();
     }
 
     private void fillGameBoard() {

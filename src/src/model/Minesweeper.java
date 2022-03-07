@@ -34,7 +34,7 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void setGameBoard(int row, int col) {
-        boolean isBordDimensionsAreNegative = Validator.IsPositive(row) && Validator.IsPositive(col);
+        boolean isBordDimensionsAreNegative = Validator.IsPositive(row) == false && Validator.IsPositive(col) == false;
 
         if (isBordDimensionsAreNegative) {
             throw new NegativeArraySizeException(ErrorMessages.NEGATIVE_NUMBER);

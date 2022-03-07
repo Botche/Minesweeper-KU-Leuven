@@ -3,15 +3,22 @@ package model;
 import model.tiles.AbstractTile;
 import model.tiles.Empty;
 import model.tiles.Explosive;
+import model.tiles.Tile;
+import notifier.ITileStateNotifier;
 import org.jetbrains.annotations.NotNull;
 import utilities.constants.Common;
 import utilities.Validator;
 import utilities.constants.ErrorMessages;
+import view.TileView;
+
+import java.util.Random;
 
 public class Minesweeper extends AbstractMineSweeper {
     private int width;
     private int height;
     private int countOfMines;
+    private int rowBoardDimension = 0;
+    private int colBoardDimension = 0;
     private AbstractTile[][] gameBoard;
     private boolean isFirstTimeRuleEnabled;
 
@@ -140,23 +147,21 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private void initializeGameBoard(@NotNull Difficulty difficulty) {
         int explosionCount = 0;
-        int rowBoardDimension = 0;
-        int colBoardDimension = 0;
 
         switch(difficulty) {
             case EASY:
-                rowBoardDimension = Common.EASY_BORD_DIMENSIONS[0];
-                colBoardDimension = Common.EASY_BORD_DIMENSIONS[1];
+                this.rowBoardDimension = Common.EASY_BORD_DIMENSIONS[0];
+                this.colBoardDimension = Common.EASY_BORD_DIMENSIONS[1];
                 explosionCount = Common.EASY_BORD_COUNT_OF_MINES;
                 break;
             case MEDIUM:
-                rowBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[0];
-                colBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[1];
+                this.rowBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[0];
+                this.colBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[1];
                 explosionCount = Common.MEDIUM_BORD_COUNT_OF_MINES;
                 break;
             case HARD:
-                rowBoardDimension = Common.HARD_BORD_DIMENSIONS[0];
-                colBoardDimension = Common.HARD_BORD_DIMENSIONS[1];
+                this.rowBoardDimension = Common.HARD_BORD_DIMENSIONS[0];
+                this.colBoardDimension = Common.HARD_BORD_DIMENSIONS[1];
                 explosionCount = Common.HARD_BORD_COUNT_OF_MINES;
                 break;
         }
@@ -178,8 +183,41 @@ public class Minesweeper extends AbstractMineSweeper {
 
         for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
             for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
-                this.gameBoard[rowIndex][colIndex] = this.generateEmptyTile();
+                AbstractTile tile = this.generateEmptyTile();
+
+                ITileStateNotifier notifier = new TileView(rowIndex, colIndex);
+                tile.setTileNotifier(notifier);
+
+                this.gameBoard[rowIndex][colIndex] = tile;
             }
+        }
+
+        this.generateBoardMines();
+    }
+
+    private void generateBoardMines() {
+        Random randomGenerator = new Random();
+        int counter = 0;
+
+        while(counter <= this.countOfMines)
+        {
+            int rowIndex = randomGenerator.nextInt(this.rowBoardDimension);
+            int colIndex = randomGenerator.nextInt(this.colBoardDimension);
+
+            AbstractTile tile = this.gameBoard[rowIndex][colIndex];
+
+            if (tile.getClass().toString().equals("Explosive")) {
+                continue;
+            }
+
+            AbstractTile explosiveTile = this.generateExplosiveTile();
+
+            ITileStateNotifier notifier = new TileView(rowIndex, colIndex);
+            explosiveTile.setTileNotifier(notifier);
+
+            this.gameBoard[rowIndex][colIndex] = explosiveTile;
+
+            counter++;
         }
     }
 }

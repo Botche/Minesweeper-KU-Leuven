@@ -46,14 +46,22 @@ public class Minesweeper extends AbstractMineSweeper {
         this.gameBoard = new AbstractTile[row][col];
     }
 
+    private void setGameBoard(AbstractTile[][] gameBoard) {
+        // TODO: Check if gameBoard is null
+
+        this.gameBoard = gameBoard;
+    }
+
     @Override
     public void startNewGame(Difficulty level) {
-        initializeGameBoard(level);
+        this.initializeGameBoard(level);
+        this.fillGameBoard();
     }
 
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
-        initializeGameBoard(row, col);
+        this.initializeGameBoard(row, col);
+        this.fillGameBoard();
     }
 
     @Override
@@ -68,7 +76,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void setWorld(AbstractTile[][] world) {
-        
+        this.setGameBoard(world);
     }
 
     @Override
@@ -115,5 +123,16 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private void initializeGameBoard(int row, int col) {
         this.setGameBoard(row, col);
+    }
+
+    private void fillGameBoard() {
+        int numberOfRows = this.gameBoard.length;
+        int numberOfColumns = this.gameBoard[0].length;
+
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+            for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
+                this.gameBoard[rowIndex][colIndex] = this.generateEmptyTile();
+            }
+        }
     }
 }

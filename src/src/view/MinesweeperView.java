@@ -188,9 +188,11 @@ public class MinesweeperView implements IGameStateNotifier {
     }
 
     private void removeAllTileEvents() {
-        for (int i=0; i<this.tiles.length; ++i)
-            for (int j=0; j<this.tiles[i].length; ++j) 
+        for (int i=0; i<this.tiles.length; ++i) {
+            for (int j = 0; j < this.tiles[i].length; ++j) {
                 this.tiles[i][j].removalAllMouseListeners();
+            }
+        }
     }
 
     @Override

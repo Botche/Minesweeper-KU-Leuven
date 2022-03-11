@@ -21,6 +21,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private int colBoardDimension = 0;
     private AbstractTile[][] gameBoard;
     private boolean isFirstTimeRuleEnabled;
+    private int flagCount;
 
     @Override
     public int getWidth() {
@@ -77,23 +78,6 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     @Override
-    public void toggleFlag(int x, int y) {
-        AbstractTile tile = this.gameBoard[x][y];
-
-        if (tile.isOpened() == false) {
-            if (tile.isFlagged()) {
-                tile.unflag();
-                this.viewNotifier.notifyUnflagged(x, y);
-
-                return;
-            }
-
-            tile.flag();
-            this.viewNotifier.notifyFlagged(x, y);
-        }
-    }
-
-    @Override
     public AbstractTile getTile(int x, int y) {
         AbstractTile tile = this.gameBoard[x][y];
 
@@ -128,8 +112,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
         if (tile.isOpened() == false) {
             tile.flag();
+            ++this.flagCount;
 
             this.viewNotifier.notifyFlagged(x, y);
+            this.viewNotifier.notifyFlagCountChanged(this.flagCount);
         }
     }
 
@@ -139,8 +125,25 @@ public class Minesweeper extends AbstractMineSweeper {
 
         if (tile.isOpened() == false) {
             tile.unflag();
+            --this.flagCount;
 
             this.viewNotifier.notifyUnflagged(x, y);
+            this.viewNotifier.notifyFlagCountChanged(this.flagCount);
+        }
+    }
+
+    @Override
+    public void toggleFlag(int x, int y) {
+        AbstractTile tile = this.gameBoard[x][y];
+
+        if (tile.isOpened() == false) {
+            if (tile.isFlagged()) {
+                this.unflag(x, y);
+
+                return;
+            }
+
+            this.flag(x, y);
         }
     }
 

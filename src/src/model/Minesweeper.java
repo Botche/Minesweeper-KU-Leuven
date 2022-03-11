@@ -116,7 +116,8 @@ public class Minesweeper extends AbstractMineSweeper {
                 this.viewNotifier.notifyExploded(x, y);
                 this.viewNotifier.notifyGameLost();
             } else {
-                this.viewNotifier.notifyOpened(x, y, 0);
+                int explosiveNeighboursCount = this.getExplosiveNeighboursCount(x, y);
+                this.viewNotifier.notifyOpened(x, y, explosiveNeighboursCount);
             }
         }
     }
@@ -195,8 +196,8 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void fillGameBoard() {
-        int numberOfRows = this.gameBoard.length;
-        int numberOfColumns = this.gameBoard[0].length;
+        int numberOfRows = this.rowBoardDimension;
+        int numberOfColumns = this.colBoardDimension;
 
         for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
             for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
@@ -237,5 +238,30 @@ public class Minesweeper extends AbstractMineSweeper {
 
             counter++;
         }
+    }
+
+    private int getExplosiveNeighboursCount(int x, int y) {
+        int explosiveNeighboursCount = 0;
+
+        int numberOfRows = this.rowBoardDimension;
+        int numberOfColumns = this.colBoardDimension;
+
+        int previousRow = Math.max(x - 1, 0);
+        int nextRow = Math.min(x + 1, numberOfRows - 1);
+
+        int previousCol = Math.max(y - 1, 0);
+        int nextCol = Math.min(y + 1, numberOfColumns - 1);
+
+        for (int row = previousRow; row <= nextRow; row++) {
+            for (int col = previousCol; col <= nextCol; col++) {
+                AbstractTile neighbourTile = this.gameBoard[row][col];
+
+                if (neighbourTile.isExplosive()) {
+                    explosiveNeighboursCount++;
+                }
+            }
+        }
+
+        return explosiveNeighboursCount;
     }
 }

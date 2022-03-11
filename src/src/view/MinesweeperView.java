@@ -152,7 +152,7 @@ public class MinesweeperView implements IGameStateNotifier {
         this.tiles = new TileView[row][col];
         for (int i=0; i<row; ++i) {
             for (int j=0; j<col; ++j) {
-                TileView temp = new TileView(j, i); 
+                TileView temp = new TileView(j, i);
                 temp.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent arg0) {

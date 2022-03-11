@@ -69,6 +69,7 @@ public class Minesweeper extends AbstractMineSweeper {
     @Override
     public void startNewGame(Difficulty level) {
         this.initializeGameBoard(level);
+        this.setFirstTimeRuleEnabled(true);
         this.fillGameBoard();
         this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
     }
@@ -76,6 +77,7 @@ public class Minesweeper extends AbstractMineSweeper {
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
         this.initializeGameBoard(row, col, explosionCount);
+        this.setFirstTimeRuleEnabled(true);
         this.fillGameBoard();
         this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
     }
@@ -87,6 +89,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
         this.setHeight(rowBoardDimension);
         this.setWidth(colBoardDimension);
+        this.setFirstTimeRuleEnabled(true);
 
         this.setGameBoard(world);
         

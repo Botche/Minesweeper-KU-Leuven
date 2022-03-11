@@ -10,8 +10,4 @@ public final class Common {
     public static int HARD_BORD_COUNT_OF_MINES = 99;
     public static int[] HARD_BORD_DIMENSIONS = new int[] { 16, 30 };
 
-
-
-
-
 }

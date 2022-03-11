@@ -137,9 +137,45 @@ public class Minesweeper extends AbstractMineSweeper {
             if (tile.isExplosive()) {
                 this.viewNotifier.notifyExploded(x, y);
                 this.viewNotifier.notifyGameLost();
-            } else {
-                int explosiveNeighboursCount = this.getExplosiveNeighboursCount(y, x);
-                this.viewNotifier.notifyOpened(x, y, explosiveNeighboursCount);
+
+                return;
+            }
+
+            int explosiveNeighboursCount = this.getExplosiveNeighboursCount(y, x);
+            this.viewNotifier.notifyOpened(x, y, explosiveNeighboursCount);
+            if (explosiveNeighboursCount == 0) {
+                this.openAllTilesWithZeroExplosiveNeighbours(y, x);
+            }
+        }
+    }
+
+    private void openAllTilesWithZeroExplosiveNeighbours(int tileRow, int tileCol) {
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
+
+        int previousRow = Math.max(tileRow - 1, 0);
+        int nextRow = Math.min(tileRow + 1, numberOfRows - 1);
+
+        int previousCol = Math.max(tileCol - 1, 0);
+        int nextCol = Math.min(tileCol + 1, numberOfColumns - 1);
+
+        for (int row = previousRow; row <= nextRow; row++) {
+            for (int col = previousCol; col <= nextCol; col++) {
+                AbstractTile neighbourTile = this.gameBoard[row][col];
+
+                if (neighbourTile.isExplosive()) {
+                    continue;
+                }
+
+                int explosiveNeighboursCount = this.getExplosiveNeighboursCount(row, col);
+                if (neighbourTile.isOpened() == false) {
+                    neighbourTile.open();
+                    this.viewNotifier.notifyOpened(col, row, explosiveNeighboursCount);
+
+                    if (explosiveNeighboursCount == 0) {
+                        openAllTilesWithZeroExplosiveNeighbours(row, col);
+                    }
+                }
             }
         }
     }
@@ -287,17 +323,17 @@ public class Minesweeper extends AbstractMineSweeper {
 
 
 
-    private int getExplosiveNeighboursCount(int x, int y) {
+    private int getExplosiveNeighboursCount(int tileRow, int tileCol) {
         int explosiveNeighboursCount = 0;
 
         int numberOfRows = this.getHeight();
         int numberOfColumns = this.getWidth();
 
-        int previousRow = Math.max(x - 1, 0);
-        int nextRow = Math.min(x + 1, numberOfRows - 1);
+        int previousRow = Math.max(tileRow - 1, 0);
+        int nextRow = Math.min(tileRow + 1, numberOfRows - 1);
 
-        int previousCol = Math.max(y - 1, 0);
-        int nextCol = Math.min(y + 1, numberOfColumns - 1);
+        int previousCol = Math.max(tileCol - 1, 0);
+        int nextCol = Math.min(tileCol + 1, numberOfColumns - 1);
 
         for (int row = previousRow; row <= nextRow; row++) {
             for (int col = previousCol; col <= nextCol; col++) {

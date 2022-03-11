@@ -102,7 +102,7 @@ public class Minesweeper extends AbstractMineSweeper {
             return null;
         }
 
-        AbstractTile tile = this.gameBoard[x][y];
+        AbstractTile tile = this.gameBoard[y][x];
 
         return tile;
     }
@@ -113,7 +113,7 @@ public class Minesweeper extends AbstractMineSweeper {
             return;
         }
 
-        AbstractTile tile = this.gameBoard[x][y];
+        AbstractTile tile = this.gameBoard[y][x];
 
         if (tile.isOpened() == false && tile.isFlagged() == false) {
 
@@ -124,9 +124,9 @@ public class Minesweeper extends AbstractMineSweeper {
                     ITileStateNotifier notifier = new TileView(x, y);
                     tile.setTileNotifier(notifier);
 
-                    this.gameBoard[x][y] = tile;
+                    this.gameBoard[y][x] = tile;
 
-                    this.generateMines(1, x, y);
+                    this.generateMines(1, y, x);
                 }
 
                 this.deactivateFirstTileRule();
@@ -138,7 +138,7 @@ public class Minesweeper extends AbstractMineSweeper {
                 this.viewNotifier.notifyExploded(x, y);
                 this.viewNotifier.notifyGameLost();
             } else {
-                int explosiveNeighboursCount = this.getExplosiveNeighboursCount(x, y);
+                int explosiveNeighboursCount = this.getExplosiveNeighboursCount(y, x);
                 this.viewNotifier.notifyOpened(x, y, explosiveNeighboursCount);
             }
         }
@@ -146,7 +146,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void flag(int x, int y) {
-        AbstractTile tile = this.gameBoard[x][y];
+        AbstractTile tile = this.gameBoard[y][x];
 
         if (tile.isOpened() == false) {
             tile.flag();
@@ -159,7 +159,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void unflag(int x, int y) {
-        AbstractTile tile = this.gameBoard[x][y];
+        AbstractTile tile = this.gameBoard[y][x];
 
         if (tile.isOpened() == false) {
             tile.unflag();
@@ -172,7 +172,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void toggleFlag(int x, int y) {
-        AbstractTile tile = this.gameBoard[x][y];
+        AbstractTile tile = this.gameBoard[y][x];
 
         if (tile.isOpened() == false) {
             if (tile.isFlagged()) {
@@ -314,10 +314,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private boolean areCoordinatesInvalid(int x, int y) {
         boolean isXInvalid = Validator.isPositive(x) == false
-                || Validator.isGreaterThan(x, this.getHeight() - 1);
+                || Validator.isGreaterThan(x, this.getWidth() - 1);
 
         boolean isYInvalid = Validator.isPositive(y) == false
-                || Validator.isGreaterThan(y, this.getWidth() - 1);
+                || Validator.isGreaterThan(y, this.getHeight() - 1);
 
         return isXInvalid || isYInvalid;
     }

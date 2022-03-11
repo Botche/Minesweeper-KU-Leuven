@@ -3,7 +3,6 @@ package model;
 import model.tiles.AbstractTile;
 import model.tiles.Empty;
 import model.tiles.Explosive;
-import model.tiles.Tile;
 import notifier.ITileStateNotifier;
 import org.jetbrains.annotations.NotNull;
 import utilities.constants.Common;
@@ -50,7 +49,7 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void setGameBoard(int row, int col) {
-        boolean isBordDimensionsAreNegative = Validator.IsPositive(row) == false && Validator.IsPositive(col) == false;
+        boolean isBordDimensionsAreNegative = Validator.isPositive(row) == false && Validator.isPositive(col) == false;
 
         if (isBordDimensionsAreNegative) {
             throw new NegativeArraySizeException(ErrorMessages.NEGATIVE_NUMBER);
@@ -79,6 +78,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public AbstractTile getTile(int x, int y) {
+        if (this.areCoordinatesInvalid(x, y)) {
+            return null;
+        }
+
         AbstractTile tile = this.gameBoard[x][y];
 
         return tile;
@@ -91,6 +94,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void open(int x, int y) {
+        if (this.areCoordinatesInvalid(x, y)) {
+            return;
+        }
+
         AbstractTile tile = this.gameBoard[x][y];
 
         if (tile.isOpened() == false && tile.isFlagged() == false) {
@@ -193,6 +200,9 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void initializeGameBoard(int row, int col, int explosionCount) {
+        this.rowBoardDimension = row;
+        this.colBoardDimension = col;
+
         this.setGameBoard(row, col);
         this.setCountOfMines(explosionCount);
         this.fillGameBoard();
@@ -266,5 +276,15 @@ public class Minesweeper extends AbstractMineSweeper {
         }
 
         return explosiveNeighboursCount;
+    }
+
+    private boolean areCoordinatesInvalid(int x, int y) {
+        boolean isXInvalid = Validator.isPositive(x) == false
+                || Validator.isGreaterThan(x, this.rowBoardDimension - 1);
+
+        boolean isYInvalid = Validator.isPositive(y) == false
+                || Validator.isGreaterThan(y, this.colBoardDimension - 1);
+
+        return isXInvalid || isYInvalid;
     }
 }

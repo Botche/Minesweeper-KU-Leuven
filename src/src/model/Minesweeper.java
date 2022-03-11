@@ -89,6 +89,12 @@ public class Minesweeper extends AbstractMineSweeper {
 
     @Override
     public void setWorld(AbstractTile[][] world) {
+        int rowBoardDimension = world.length;
+        int colBoardDimension = world[0].length;
+
+        this.rowBoardDimension = rowBoardDimension;
+        this.colBoardDimension = colBoardDimension;
+
         this.setGameBoard(world);
     }
 

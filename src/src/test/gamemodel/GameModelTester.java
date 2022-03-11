@@ -127,7 +127,9 @@ public class GameModelTester {
         gameModel.setWorld(world);
         for (int i=0; i<row; ++i)
             for (int j=0; j<col; ++j)
-                assertEquals(gameModel.getTile(j, i), world[i][j]);
+                // The indexes were switched
+                // assertEquals(gameModel.getTile(j, i), world[i][j]);
+                assertEquals(gameModel.getTile(i, j), world[i][j]);
     }
 
     @Test

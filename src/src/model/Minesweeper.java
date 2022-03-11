@@ -230,7 +230,7 @@ public class Minesweeper extends AbstractMineSweeper {
         Random randomGenerator = new Random();
         int counter = 0;
 
-        while(counter <= this.countOfMines)
+        while(counter < this.countOfMines)
         {
             int rowIndex = randomGenerator.nextInt(this.rowBoardDimension);
             int colIndex = randomGenerator.nextInt(this.colBoardDimension);

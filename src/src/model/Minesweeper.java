@@ -18,7 +18,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private int width;
     private AbstractTile[][] gameBoard;
     private boolean isFirstTimeRuleEnabled = true;
-    private int flagCount;
+    private int flagsCount;
 
     @Override
     public int getWidth() {
@@ -40,6 +40,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private void setCountOfMines(int countOfMines) {
         this.countOfMines = countOfMines;
+    }
+
+    private void setFlagsCount(int flagsCount) {
+        this.flagsCount = flagsCount;
     }
 
     public boolean getIsFirstTimeRuleEnabled() {
@@ -71,7 +75,9 @@ public class Minesweeper extends AbstractMineSweeper {
         this.initializeGameBoard(level);
         this.setFirstTimeRuleEnabled(true);
         this.fillGameBoard();
+
         this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
+        this.viewNotifier.notifyFlagCountChanged(this.flagsCount);
     }
 
     @Override
@@ -79,7 +85,9 @@ public class Minesweeper extends AbstractMineSweeper {
         this.initializeGameBoard(row, col, explosionCount);
         this.setFirstTimeRuleEnabled(true);
         this.fillGameBoard();
+
         this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
+        this.viewNotifier.notifyFlagCountChanged(this.flagsCount);
     }
 
     @Override
@@ -186,10 +194,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
         if (tile.isOpened() == false) {
             tile.flag();
-            ++this.flagCount;
+            --this.flagsCount;
 
             this.viewNotifier.notifyFlagged(x, y);
-            this.viewNotifier.notifyFlagCountChanged(this.flagCount);
+            this.viewNotifier.notifyFlagCountChanged(this.flagsCount);
         }
     }
 
@@ -199,10 +207,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
         if (tile.isOpened() == false) {
             tile.unflag();
-            --this.flagCount;
+            ++this.flagsCount;
 
             this.viewNotifier.notifyUnflagged(x, y);
-            this.viewNotifier.notifyFlagCountChanged(this.flagCount);
+            this.viewNotifier.notifyFlagCountChanged(this.flagsCount);
         }
     }
 
@@ -263,6 +271,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
         this.setGameBoard(height, width);
         this.setCountOfMines(explosionCount);
+        this.setFlagsCount(explosionCount);
         this.fillGameBoard();
     }
 
@@ -272,6 +281,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
         this.setGameBoard(row, col);
         this.setCountOfMines(explosionCount);
+        this.setFlagsCount(explosionCount);
         this.fillGameBoard();
     }
 

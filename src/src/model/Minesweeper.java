@@ -66,23 +66,14 @@ public class Minesweeper extends AbstractMineSweeper {
     public void startNewGame(Difficulty level) {
         this.initializeGameBoard(level);
         this.fillGameBoard();
+        this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
     }
 
     @Override
     public void startNewGame(int row, int col, int explosionCount) {
         this.initializeGameBoard(row, col, explosionCount);
         this.fillGameBoard();
-    }
-
-    @Override
-    public AbstractTile getTile(int x, int y) {
-        if (this.areCoordinatesInvalid(x, y)) {
-            return null;
-        }
-
-        AbstractTile tile = this.gameBoard[x][y];
-
-        return tile;
+        this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
     }
 
     @Override
@@ -94,6 +85,19 @@ public class Minesweeper extends AbstractMineSweeper {
         this.setWidth(colBoardDimension);
 
         this.setGameBoard(world);
+        
+        this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
+    }
+
+    @Override
+    public AbstractTile getTile(int x, int y) {
+        if (this.areCoordinatesInvalid(x, y)) {
+            return null;
+        }
+
+        AbstractTile tile = this.gameBoard[x][y];
+
+        return tile;
     }
 
     @Override

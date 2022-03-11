@@ -15,8 +15,7 @@ public class App {
             Your code to bind your game model to the game user interface
         */
 
-        model.startNewGame(Difficulty.EASY);
         view.setGameModel(model);
-        view.notifyNewGame(Common.EASY_BORD_DIMENSIONS[0], Common.EASY_BORD_DIMENSIONS[1]);
+        model.startNewGame(Difficulty.EASY);
     }
 }

@@ -17,7 +17,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private int height;
     private int width;
     private AbstractTile[][] gameBoard;
-    private boolean isFirstTimeRuleEnabled;
+    private boolean isFirstTimeRuleEnabled = true;
     private int flagCount;
 
     @Override
@@ -40,6 +40,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private void setCountOfMines(int countOfMines) {
         this.countOfMines = countOfMines;
+    }
+
+    public boolean getIsFirstTimeRuleEnabled() {
+        return isFirstTimeRuleEnabled;
     }
 
     private void setFirstTimeRuleEnabled(boolean firstTimeRuleEnabled) {
@@ -109,6 +113,22 @@ public class Minesweeper extends AbstractMineSweeper {
         AbstractTile tile = this.gameBoard[x][y];
 
         if (tile.isOpened() == false && tile.isFlagged() == false) {
+
+            if (this.getIsFirstTimeRuleEnabled()) {
+                if (tile.isExplosive()) {
+                    tile = this.generateEmptyTile();
+
+                    ITileStateNotifier notifier = new TileView(x, y);
+                    tile.setTileNotifier(notifier);
+
+                    this.gameBoard[x][y] = tile;
+
+                    this.generateMines(1, x, y);
+                }
+
+                this.deactivateFirstTileRule();
+            }
+
             tile.open();
 
             if (tile.isExplosive()) {
@@ -231,14 +251,14 @@ public class Minesweeper extends AbstractMineSweeper {
             }
         }
 
-        this.generateBoardMines();
+        this.generateMines(this.countOfMines, -1, -1);
     }
 
-    private void generateBoardMines() {
+    private void generateMines(int countOfMines, int exclusiveRowIndex, int exclusiveColIndex) {
         Random randomGenerator = new Random();
         int counter = 0;
 
-        while(counter < this.countOfMines)
+        while(counter < countOfMines)
         {
             int rowIndex = randomGenerator.nextInt(this.getHeight());
             int colIndex = randomGenerator.nextInt(this.getWidth());
@@ -246,7 +266,8 @@ public class Minesweeper extends AbstractMineSweeper {
             AbstractTile tile = this.gameBoard[rowIndex][colIndex];
             String tileName = tile.getClass().getSimpleName();
 
-            if (tileName.equals("Explosive")) {
+            boolean isPositionOnExclusiveCoordinates = rowIndex == exclusiveRowIndex && colIndex == exclusiveColIndex;
+            if (tileName.equals("Explosive") || isPositionOnExclusiveCoordinates) {
                 continue;
             }
 
@@ -260,6 +281,8 @@ public class Minesweeper extends AbstractMineSweeper {
             counter++;
         }
     }
+
+
 
     private int getExplosiveNeighboursCount(int x, int y) {
         int explosiveNeighboursCount = 0;

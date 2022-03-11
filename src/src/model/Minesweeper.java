@@ -109,7 +109,7 @@ public class Minesweeper extends AbstractMineSweeper {
     public void open(int x, int y) {
         AbstractTile tile = this.gameBoard[x][y];
 
-        if (tile.isOpened() == false) {
+        if (tile.isOpened() == false && tile.isFlagged() == false) {
             tile.open();
 
             if (tile.isExplosive()) {

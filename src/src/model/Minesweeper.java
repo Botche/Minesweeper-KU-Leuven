@@ -13,11 +13,9 @@ import view.TileView;
 import java.util.Random;
 
 public class Minesweeper extends AbstractMineSweeper {
-    private int width;
-    private int height;
     private int countOfMines;
-    private int rowBoardDimension = 0;
-    private int colBoardDimension = 0;
+    private int height;
+    private int width;
     private AbstractTile[][] gameBoard;
     private boolean isFirstTimeRuleEnabled;
     private int flagCount;
@@ -92,8 +90,8 @@ public class Minesweeper extends AbstractMineSweeper {
         int rowBoardDimension = world.length;
         int colBoardDimension = world[0].length;
 
-        this.rowBoardDimension = rowBoardDimension;
-        this.colBoardDimension = colBoardDimension;
+        this.setHeight(rowBoardDimension);
+        this.setWidth(colBoardDimension);
 
         this.setGameBoard(world);
     }
@@ -184,30 +182,30 @@ public class Minesweeper extends AbstractMineSweeper {
 
         switch(difficulty) {
             case EASY:
-                this.rowBoardDimension = Common.EASY_BORD_DIMENSIONS[0];
-                this.colBoardDimension = Common.EASY_BORD_DIMENSIONS[1];
+                this.setHeight(Common.EASY_BORD_DIMENSIONS[0]);
+                this.setWidth(Common.EASY_BORD_DIMENSIONS[1]);
                 explosionCount = Common.EASY_BORD_COUNT_OF_MINES;
                 break;
             case MEDIUM:
-                this.rowBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[0];
-                this.colBoardDimension = Common.MEDIUM_BORD_DIMENSIONS[1];
+                this.setHeight(Common.MEDIUM_BORD_DIMENSIONS[0]);
+                this.setWidth(Common.MEDIUM_BORD_DIMENSIONS[1]);
                 explosionCount = Common.MEDIUM_BORD_COUNT_OF_MINES;
                 break;
             case HARD:
-                this.rowBoardDimension = Common.HARD_BORD_DIMENSIONS[0];
-                this.colBoardDimension = Common.HARD_BORD_DIMENSIONS[1];
+                this.setHeight(Common.HARD_BORD_DIMENSIONS[0]);
+                this.setWidth(Common.HARD_BORD_DIMENSIONS[1]);
                 explosionCount = Common.HARD_BORD_COUNT_OF_MINES;
                 break;
         }
 
-        this.setGameBoard(rowBoardDimension, colBoardDimension);
+        this.setGameBoard(height, width);
         this.setCountOfMines(explosionCount);
         this.fillGameBoard();
     }
 
     private void initializeGameBoard(int row, int col, int explosionCount) {
-        this.rowBoardDimension = row;
-        this.colBoardDimension = col;
+        this.setHeight(row);
+        this.setWidth(col);
 
         this.setGameBoard(row, col);
         this.setCountOfMines(explosionCount);
@@ -215,8 +213,8 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void fillGameBoard() {
-        int numberOfRows = this.rowBoardDimension;
-        int numberOfColumns = this.colBoardDimension;
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
 
         for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
             for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
@@ -238,8 +236,8 @@ public class Minesweeper extends AbstractMineSweeper {
 
         while(counter < this.countOfMines)
         {
-            int rowIndex = randomGenerator.nextInt(this.rowBoardDimension);
-            int colIndex = randomGenerator.nextInt(this.colBoardDimension);
+            int rowIndex = randomGenerator.nextInt(this.getHeight());
+            int colIndex = randomGenerator.nextInt(this.getWidth());
 
             AbstractTile tile = this.gameBoard[rowIndex][colIndex];
             String tileName = tile.getClass().getSimpleName();
@@ -262,8 +260,8 @@ public class Minesweeper extends AbstractMineSweeper {
     private int getExplosiveNeighboursCount(int x, int y) {
         int explosiveNeighboursCount = 0;
 
-        int numberOfRows = this.rowBoardDimension;
-        int numberOfColumns = this.colBoardDimension;
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
 
         int previousRow = Math.max(x - 1, 0);
         int nextRow = Math.min(x + 1, numberOfRows - 1);
@@ -286,10 +284,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
     private boolean areCoordinatesInvalid(int x, int y) {
         boolean isXInvalid = Validator.isPositive(x) == false
-                || Validator.isGreaterThan(x, this.rowBoardDimension - 1);
+                || Validator.isGreaterThan(x, this.getHeight() - 1);
 
         boolean isYInvalid = Validator.isPositive(y) == false
-                || Validator.isGreaterThan(y, this.colBoardDimension - 1);
+                || Validator.isGreaterThan(y, this.getWidth() - 1);
 
         return isXInvalid || isYInvalid;
     }

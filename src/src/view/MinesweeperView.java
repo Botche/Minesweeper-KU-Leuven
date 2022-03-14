@@ -23,6 +23,8 @@ import java.util.Locale;
 
 import model.leaderboard.Leaderboard;
 import notifier.IGameStateNotifier;
+import utilities.FileHelper;
+import utilities.constants.Common;
 
 public class MinesweeperView implements IGameStateNotifier {
     public static final int MAX_TIME = 1;//in minutes
@@ -239,6 +241,14 @@ public class MinesweeperView implements IGameStateNotifier {
     }
 
     private void showLeaderBoard() {
+        this.clearTheWindow();
+
+        JPanel leaderboardView = LeaderboardView.generateView();
+        this.window.add(leaderboardView);
+        this.window.setVisible(true);
+    }
+
+    private void clearTheWindow() {
         this.gameModel.clearGame();
 
         this.window.remove(this.timerPanel);
@@ -251,39 +261,5 @@ public class MinesweeperView implements IGameStateNotifier {
         this.world.setVisible(false);
         this.world.setVisible(true);
         this.world.repaint();
-
-        try {
-            JPanel panel = new JPanel();
-            panel.setBorder(BorderFactory.createTitledBorder(
-                    BorderFactory.createEtchedBorder(), "Leaderboard", TitledBorder.CENTER, TitledBorder.TOP));
-
-            FileReader reader = new FileReader("leaderboard.json");
-            Gson gson = new Gson();
-            Leaderboard dataFromJson = gson.fromJson(reader, Leaderboard.class);
-
-            var scoreTables = dataFromJson.getScoreTables();
-            String[][] data = new String[10][scoreTables.size()];
-            String[] header = new String[scoreTables.size()];
-            for (int index = 0; index < scoreTables.size(); index++) {
-                var scoreTable = scoreTables.get(index);
-
-                header[index] = scoreTable.getDifficulty().name().toLowerCase(Locale.ROOT);
-
-                var scores = scoreTable.getScores();
-                for (int scoresIndex = 0; scoresIndex < scores.size(); scoresIndex++) {
-                    var score = scores.get(scoresIndex);
-
-                    data[scoresIndex][index] = score.toString();
-                }
-            }
-
-            JTable table = new JTable(data, header);
-            panel.add(new JScrollPane(table));
-            this.window.add(panel);
-            this.window.setVisible(true);
-        } catch (IOException ioe) {
-            System.out.println("An error occurred.");
-            ioe.printStackTrace();
-        }
     }
 }

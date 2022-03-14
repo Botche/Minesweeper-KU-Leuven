@@ -1,8 +1,8 @@
 package model.leaderboard;
 
 import model.Difficulty;
+import utilities.constants.Common;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +42,11 @@ public class GameMode {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(this.getDifficulty());
-        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append(System.getProperty(Common.LINE_SEPARATOR_PROPERTY));
 
         for (var score : this.getScores()) {
             stringBuilder.append(score.toString());
-            stringBuilder.append(System.getProperty("line.separator"));
+            stringBuilder.append(System.getProperty(Common.LINE_SEPARATOR_PROPERTY));
         }
 
         return stringBuilder.toString();

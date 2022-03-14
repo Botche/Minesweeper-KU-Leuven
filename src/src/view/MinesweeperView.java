@@ -4,15 +4,7 @@ import model.Difficulty;
 import model.PlayableMinesweeper;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
 
@@ -45,6 +37,8 @@ public class MinesweeperView implements IGameStateNotifier {
     private JPanel flagPanel = new JPanel();
     private JLabel timerView = new JLabel();
     private JLabel flagCountView = new JLabel();
+    private JFrame optionalFrame = new JFrame();
+    private JOptionPane jOptionPane = new JOptionPane();
 
     public MinesweeperView() {
         this.window = new JFrame("Minesweeper");
@@ -178,12 +172,14 @@ public class MinesweeperView implements IGameStateNotifier {
     @Override
     public void notifyGameLost() {
         this.removeAllTileEvents();
-        //throw new UnsupportedOperationException();
+
+        this.jOptionPane.showMessageDialog(this.jOptionPane,"Game Over!");
     }
     @Override
     public void notifyGameWon() {
         this.removeAllTileEvents();
-        throw new UnsupportedOperationException();
+
+        this.jOptionPane.showMessageDialog(this.jOptionPane,"You won!");
     }
 
     private void removeAllTileEvents() {

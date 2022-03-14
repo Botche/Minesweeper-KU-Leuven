@@ -154,39 +154,14 @@ public class Minesweeper extends AbstractMineSweeper {
             if (explosiveNeighboursCount == 0) {
                 this.openAllTilesWithZeroExplosiveNeighbours(y, x);
             }
-        }
-    }
 
-    private void openAllTilesWithZeroExplosiveNeighbours(int tileRow, int tileCol) {
-        int numberOfRows = this.getHeight();
-        int numberOfColumns = this.getWidth();
-
-        int previousRow = Math.max(tileRow - 1, 0);
-        int nextRow = Math.min(tileRow + 1, numberOfRows - 1);
-
-        int previousCol = Math.max(tileCol - 1, 0);
-        int nextCol = Math.min(tileCol + 1, numberOfColumns - 1);
-
-        for (int row = previousRow; row <= nextRow; row++) {
-            for (int col = previousCol; col <= nextCol; col++) {
-                AbstractTile neighbourTile = this.gameBoard[row][col];
-
-                if (neighbourTile.isExplosive()) {
-                    continue;
-                }
-
-                int explosiveNeighboursCount = this.getExplosiveNeighboursCount(row, col);
-                if (neighbourTile.isOpened() == false) {
-                    neighbourTile.open();
-                    this.viewNotifier.notifyOpened(col, row, explosiveNeighboursCount);
-
-                    if (explosiveNeighboursCount == 0) {
-                        openAllTilesWithZeroExplosiveNeighbours(row, col);
-                    }
-                }
+            if (this.isGameWon()) {
+                this.viewNotifier.notifyGameWon();
             }
         }
     }
+
+
 
     @Override
     public void flag(int x, int y) {
@@ -331,8 +306,6 @@ public class Minesweeper extends AbstractMineSweeper {
         }
     }
 
-
-
     private int getExplosiveNeighboursCount(int tileRow, int tileCol) {
         int explosiveNeighboursCount = 0;
 
@@ -366,5 +339,57 @@ public class Minesweeper extends AbstractMineSweeper {
                 || Validator.isGreaterThan(y, this.getHeight() - 1);
 
         return isXInvalid || isYInvalid;
+    }
+
+    private boolean isGameWon() {
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
+
+        boolean isAllEmptyTilesAreOpen = true;
+
+        rowloop:
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+            for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
+                var tile = this.gameBoard[rowIndex][colIndex];
+
+                if (tile.isOpened() == false && tile.isExplosive() == false) {
+                    isAllEmptyTilesAreOpen = false;
+                    break rowloop;
+                }
+            }
+        }
+
+        return isAllEmptyTilesAreOpen;
+    }
+
+    private void openAllTilesWithZeroExplosiveNeighbours(int tileRow, int tileCol) {
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
+
+        int previousRow = Math.max(tileRow - 1, 0);
+        int nextRow = Math.min(tileRow + 1, numberOfRows - 1);
+
+        int previousCol = Math.max(tileCol - 1, 0);
+        int nextCol = Math.min(tileCol + 1, numberOfColumns - 1);
+
+        for (int row = previousRow; row <= nextRow; row++) {
+            for (int col = previousCol; col <= nextCol; col++) {
+                AbstractTile neighbourTile = this.gameBoard[row][col];
+
+                if (neighbourTile.isExplosive()) {
+                    continue;
+                }
+
+                int explosiveNeighboursCount = this.getExplosiveNeighboursCount(row, col);
+                if (neighbourTile.isOpened() == false) {
+                    neighbourTile.open();
+                    this.viewNotifier.notifyOpened(col, row, explosiveNeighboursCount);
+
+                    if (explosiveNeighboursCount == 0) {
+                        openAllTilesWithZeroExplosiveNeighbours(row, col);
+                    }
+                }
+            }
+        }
     }
 }

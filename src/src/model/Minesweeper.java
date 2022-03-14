@@ -10,7 +10,10 @@ import utilities.Validator;
 import utilities.constants.ErrorMessages;
 import view.TileView;
 
+import java.time.Duration;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Minesweeper extends AbstractMineSweeper {
     private int countOfMines;
@@ -19,6 +22,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private AbstractTile[][] gameBoard;
     private boolean isFirstTimeRuleEnabled = true;
     private int flagsCount;
+    private Timer timer;
 
     @Override
     public int getWidth() {
@@ -78,6 +82,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
         this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
         this.viewNotifier.notifyFlagCountChanged(this.flagsCount);
+        this.startTimer();
     }
 
     @Override
@@ -88,6 +93,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
         this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
         this.viewNotifier.notifyFlagCountChanged(this.flagsCount);
+        this.startTimer();
     }
 
     @Override
@@ -102,6 +108,7 @@ public class Minesweeper extends AbstractMineSweeper {
         this.setGameBoard(world);
         
         this.viewNotifier.notifyNewGame(this.getHeight(), this.getWidth());
+        this.startTimer();
     }
 
     @Override
@@ -144,6 +151,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
             if (tile.isExplosive()) {
                 this.viewNotifier.notifyExploded(x, y);
+                this.timer.cancel();
                 this.viewNotifier.notifyGameLost();
 
                 return;
@@ -156,6 +164,7 @@ public class Minesweeper extends AbstractMineSweeper {
             }
 
             if (this.isGameWon()) {
+                this.timer.cancel();
                 this.viewNotifier.notifyGameWon();
             }
         }
@@ -391,5 +400,22 @@ public class Minesweeper extends AbstractMineSweeper {
                 }
             }
         }
+    }
+
+    private void startTimer() {
+        long startingTime = System.currentTimeMillis();
+        long delay = 0;
+        long period = 1000;
+
+        this.timer = new Timer();
+        this.timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                long currentTIme = System.currentTimeMillis();
+
+                Duration duration = Duration.ofMillis(currentTIme - startingTime);
+                viewNotifier.notifyTimeElapsedChanged(duration);
+            }
+        }, delay, period);
     }
 }

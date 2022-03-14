@@ -69,8 +69,6 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void setGameBoard(AbstractTile[][] gameBoard) {
-        // TODO: Check if gameBoard is null
-
         this.gameBoard = gameBoard;
     }
 
@@ -152,6 +150,7 @@ public class Minesweeper extends AbstractMineSweeper {
             if (tile.isExplosive()) {
                 this.viewNotifier.notifyExploded(x, y);
                 this.timer.cancel();
+                this.showAllMines();
                 this.viewNotifier.notifyGameLost();
 
                 return;
@@ -169,8 +168,6 @@ public class Minesweeper extends AbstractMineSweeper {
             }
         }
     }
-
-
 
     @Override
     public void flag(int x, int y) {
@@ -417,5 +414,22 @@ public class Minesweeper extends AbstractMineSweeper {
                 viewNotifier.notifyTimeElapsedChanged(duration);
             }
         }, delay, period);
+    }
+
+    private void showAllMines() {
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
+
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+            for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
+                AbstractTile tile = this.gameBoard[rowIndex][colIndex];
+
+                if (tile.isExplosive() == false) {
+                    continue;
+                }
+
+                this.viewNotifier.notifyExploded(colIndex, rowIndex);
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 package model.leaderboard;
 
-public class PlayerScore {
+import model.leaderboard.interfaces.IPlayerScore;
+
+public class PlayerScore implements IPlayerScore {
     private String username;
     private String gameTime;
 

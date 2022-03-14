@@ -1,19 +1,21 @@
 package model.leaderboard;
 
 import model.Difficulty;
+import model.leaderboard.interfaces.IGameMode;
+import model.leaderboard.interfaces.ILeaderboard;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Leaderboard {
-    private List<GameMode> scoreTables;
+public class Leaderboard implements ILeaderboard {
+    private List<IGameMode> scoreTables;
 
-    public List<GameMode> getScoreTables() {
+    public List<IGameMode> getScoreTables() {
         return this.scoreTables;
     }
 
     public Leaderboard() {
-        this.scoreTables = new ArrayList<GameMode>();
+        this.scoreTables = new ArrayList<IGameMode>();
         this.scoreTables.add(new GameMode(Difficulty.EASY));
         this.scoreTables.add(new GameMode(Difficulty.MEDIUM));
         this.scoreTables.add(new GameMode(Difficulty.HARD));

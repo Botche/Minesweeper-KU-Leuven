@@ -1,6 +1,6 @@
 package model;
 
-import model.leaderboard.Leaderboard;
+import model.leaderboard.interfaces.ILeaderboard;
 import model.tiles.AbstractTile;
 import model.tiles.Empty;
 import model.tiles.Explosive;
@@ -12,9 +12,6 @@ import utilities.Validator;
 import utilities.constants.ErrorMessages;
 import view.TileView;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Random;
 import java.util.Timer;
@@ -462,7 +459,7 @@ public class Minesweeper extends AbstractMineSweeper {
         FileHelper.createFile(Common.LEADERBOARD_FILE_NAME);
 
         // Read the data from the file
-        var data = (Leaderboard)FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME);
+        var data = (ILeaderboard)FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME);
 
         // Update the data
         String username = System.getProperty(Common.USERNAME_PROPERTY);

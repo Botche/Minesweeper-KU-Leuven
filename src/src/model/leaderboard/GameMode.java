@@ -1,14 +1,16 @@
 package model.leaderboard;
 
 import model.Difficulty;
+import model.leaderboard.interfaces.IGameMode;
+import model.leaderboard.interfaces.IPlayerScore;
 import utilities.constants.Common;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameMode {
+public class GameMode implements IGameMode {
     private Difficulty difficulty;
-    private List<PlayerScore> scores;
+    private List<IPlayerScore> scores;
 
     public GameMode(Difficulty difficulty) {
         this.setDifficulty(difficulty);
@@ -23,11 +25,11 @@ public class GameMode {
         this.difficulty = difficulty;
     }
 
-    public List<PlayerScore> getScores() {
+    public List<IPlayerScore> getScores() {
         return scores;
     }
 
-    private void setScores(List<PlayerScore> scores) {
+    private void setScores(List<IPlayerScore> scores) {
         this.scores = scores;
     }
 

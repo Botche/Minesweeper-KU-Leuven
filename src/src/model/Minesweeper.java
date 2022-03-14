@@ -414,6 +414,10 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void startTimer() {
+        if (this.timer != null) {
+            this.timer.cancel();
+        }
+
         long startingTime = System.currentTimeMillis();
         long delay = 0;
         long period = 1000;

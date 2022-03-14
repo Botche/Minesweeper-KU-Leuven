@@ -1,10 +1,12 @@
 package view;
 
+import com.google.gson.Gson;
 import model.Difficulty;
 import model.PlayableMinesweeper;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
 
@@ -12,10 +14,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
 import java.awt.event.ActionEvent;
+import java.util.Locale;
 
+import model.leaderboard.Leaderboard;
 import notifier.IGameStateNotifier;
 
 public class MinesweeperView implements IGameStateNotifier {
@@ -245,5 +251,39 @@ public class MinesweeperView implements IGameStateNotifier {
         this.world.setVisible(false);
         this.world.setVisible(true);
         this.world.repaint();
+
+        try {
+            JPanel panel = new JPanel();
+            panel.setBorder(BorderFactory.createTitledBorder(
+                    BorderFactory.createEtchedBorder(), "Leaderboard", TitledBorder.CENTER, TitledBorder.TOP));
+
+            FileReader reader = new FileReader("leaderboard.json");
+            Gson gson = new Gson();
+            Leaderboard dataFromJson = gson.fromJson(reader, Leaderboard.class);
+
+            var scoreTables = dataFromJson.getScoreTables();
+            String[][] data = new String[10][scoreTables.size()];
+            String[] header = new String[scoreTables.size()];
+            for (int index = 0; index < scoreTables.size(); index++) {
+                var scoreTable = scoreTables.get(index);
+
+                header[index] = scoreTable.getDifficulty().name().toLowerCase(Locale.ROOT);
+
+                var scores = scoreTable.getScores();
+                for (int scoresIndex = 0; scoresIndex < scores.size(); scoresIndex++) {
+                    var score = scores.get(scoresIndex);
+
+                    data[scoresIndex][index] = score.toString();
+                }
+            }
+
+            JTable table = new JTable(data, header);
+            panel.add(new JScrollPane(table));
+            this.window.add(panel);
+            this.window.setVisible(true);
+        } catch (IOException ioe) {
+            System.out.println("An error occurred.");
+            ioe.printStackTrace();
+        }
     }
 }

@@ -10,4 +10,7 @@ public final class Common {
     public static int HARD_BORD_COUNT_OF_MINES = 99;
     public static int[] HARD_BORD_DIMENSIONS = new int[] { 16, 30 };
 
+    public static String LEADERBOARD_FILE_NAME = "leaderboard.json";
+
+    public static String USERNAME_PROPERTY = "user.name";
 }

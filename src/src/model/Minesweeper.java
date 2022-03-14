@@ -1,24 +1,21 @@
 package model;
 
-import com.google.gson.Gson;
-import model.leaderboard.GameMode;
 import model.leaderboard.Leaderboard;
 import model.tiles.AbstractTile;
 import model.tiles.Empty;
 import model.tiles.Explosive;
 import notifier.ITileStateNotifier;
 import org.jetbrains.annotations.NotNull;
+import utilities.FileHelper;
 import utilities.constants.Common;
 import utilities.Validator;
 import utilities.constants.ErrorMessages;
 import view.TileView;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -460,29 +457,18 @@ public class Minesweeper extends AbstractMineSweeper {
         if (this.difficulty == null) {
             return;
         }
-        
-        String username = System.getProperty("user.name");
 
-        try {
-            FileReader reader = new FileReader("leaderboard.json");
-            Gson gson = new Gson();
-            Leaderboard data = gson.fromJson(reader, Leaderboard.class);
+        // Create the file if not exist
+        FileHelper.createFile(Common.LEADERBOARD_FILE_NAME);
 
-            if (data == null) {
-                data = new Leaderboard();
-            }
+        // Read the data from the file
+        var data = (Leaderboard)FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME);
 
-            data.addNewScore(this.difficulty, username, this.timeAsString);
+        // Update the data
+        String username = System.getProperty(Common.USERNAME_PROPERTY);
+        data.addNewScore(this.difficulty, username, this.timeAsString);
 
-            File leaderboard = new File("leaderboard.json");
-            leaderboard.createNewFile();
-
-            FileWriter writer = new FileWriter("leaderboard.json");
-            writer.append(gson.toJson(data));
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+        // Write the data to the file
+        FileHelper.writeFileToJson(data);
     }
 }

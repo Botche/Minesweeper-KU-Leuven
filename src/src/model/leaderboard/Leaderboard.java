@@ -8,6 +8,10 @@ import java.util.List;
 public class Leaderboard {
     private List<GameMode> scoreTables;
 
+    public List<GameMode> getScoreTables() {
+        return this.scoreTables;
+    }
+
     public Leaderboard() {
         this.scoreTables = new ArrayList<GameMode>();
         this.scoreTables.add(new GameMode(Difficulty.EASY));

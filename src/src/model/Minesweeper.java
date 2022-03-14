@@ -457,6 +457,10 @@ public class Minesweeper extends AbstractMineSweeper {
     }
     
     private void saveGameTime() {
+        if (this.difficulty == null) {
+            return;
+        }
+        
         String username = System.getProperty("user.name");
 
         try {

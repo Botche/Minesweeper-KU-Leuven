@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.Gson;
 import model.leaderboard.GameMode;
+import model.leaderboard.Leaderboard;
 import model.tiles.AbstractTile;
 import model.tiles.Empty;
 import model.tiles.Explosive;
@@ -31,6 +32,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private int flagsCount;
     private Timer timer;
     private String timeAsString;
+    private Difficulty difficulty;
 
     @Override
     public int getWidth() {
@@ -264,6 +266,7 @@ public class Minesweeper extends AbstractMineSweeper {
                 break;
         }
 
+        this.difficulty = difficulty;
         this.setGameBoard(height, width);
         this.setCountOfMines(explosionCount);
         this.setFlagsCount(explosionCount);
@@ -459,13 +462,13 @@ public class Minesweeper extends AbstractMineSweeper {
         try {
             FileReader reader = new FileReader("leaderboard.json");
             Gson gson = new Gson();
-            GameMode data = gson.fromJson(reader, GameMode.class);
+            Leaderboard data = gson.fromJson(reader, Leaderboard.class);
 
             if (data == null) {
-                data = new GameMode(Difficulty.EASY);
+                data = new Leaderboard();
             }
 
-            data.addNewScore(username, this.timeAsString);
+            data.addNewScore(this.difficulty, username, this.timeAsString);
 
             File leaderboard = new File("leaderboard.json");
             leaderboard.createNewFile();

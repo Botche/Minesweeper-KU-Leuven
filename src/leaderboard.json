@@ -1,1 +1,39 @@
-{"difficulty":"EASY","scores":[{"username":"gabri","gameTime":"0:33"},{"username":"gabri","gameTime":"0:47"}]}
+{
+  "scoreTables":[
+    {
+      "difficulty":"EASY",
+      "scores":[
+        {
+          "username":"gabri",
+          "gameTime":"0:48"
+        },
+        {
+          "username":"gabri",
+          "gameTime":"0:33"
+        },
+        {
+          "username":"gabri",
+          "gameTime":"0:47"
+        }
+      ]
+    },
+    {
+      "difficulty":"MEDIUM",
+      "scores":[
+        {
+          "username":"gabri",
+          "gameTime":"0:00"
+        }
+      ]
+    },
+    {
+      "difficulty":"HARD",
+      "scores":[
+        {
+          "username":"gabri",
+          "gameTime":"0:00"
+        }
+      ]
+    }
+  ]
+}

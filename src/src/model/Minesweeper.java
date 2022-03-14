@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.Gson;
+import model.leaderboard.GameMode;
 import model.tiles.AbstractTile;
 import model.tiles.Empty;
 import model.tiles.Explosive;
@@ -10,7 +12,12 @@ import utilities.Validator;
 import utilities.constants.ErrorMessages;
 import view.TileView;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,6 +30,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private boolean isFirstTimeRuleEnabled = true;
     private int flagsCount;
     private Timer timer;
+    private String timeAsString;
 
     @Override
     public int getWidth() {
@@ -164,6 +172,7 @@ public class Minesweeper extends AbstractMineSweeper {
 
             if (this.isGameWon()) {
                 this.timer.cancel();
+                this.saveGameTime();
                 this.viewNotifier.notifyGameWon();
             }
         }
@@ -208,6 +217,11 @@ public class Minesweeper extends AbstractMineSweeper {
 
             this.flag(x, y);
         }
+    }
+
+    @Override
+    public void clearGame() {
+        this.timer.cancel();
     }
 
     @Override
@@ -408,10 +422,12 @@ public class Minesweeper extends AbstractMineSweeper {
         this.timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                long currentTIme = System.currentTimeMillis();
+                long currentTime = System.currentTimeMillis();
 
-                Duration duration = Duration.ofMillis(currentTIme - startingTime);
+                Duration duration = Duration.ofMillis(currentTime - startingTime);
                 viewNotifier.notifyTimeElapsedChanged(duration);
+                timeAsString = String.format("%d:%02d", duration.toMinutesPart(), duration.toSecondsPart());
+
             }
         }, delay, period);
     }
@@ -430,6 +446,32 @@ public class Minesweeper extends AbstractMineSweeper {
 
                 this.viewNotifier.notifyExploded(colIndex, rowIndex);
             }
+        }
+    }
+    
+    private void saveGameTime() {
+        String username = System.getProperty("user.name");
+
+        try {
+            FileReader reader = new FileReader("leaderboard.json");
+            Gson gson = new Gson();
+            GameMode data = gson.fromJson(reader, GameMode.class);
+
+            if (data == null) {
+                data = new GameMode(Difficulty.EASY);
+            }
+
+            data.addNewScore(username, this.timeAsString);
+
+            File leaderboard = new File("leaderboard.json");
+            leaderboard.createNewFile();
+
+            FileWriter writer = new FileWriter("leaderboard.json");
+            writer.append(gson.toJson(data));
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 }

@@ -30,7 +30,8 @@ public class MinesweeperView implements IGameStateNotifier {
     private JFrame window;
     private JMenuBar menuBar;
     private JMenu gameMenu;
-    private JMenuItem easyGame, mediumGame, hardGame;
+    private JMenuItem easyGame, mediumGame, hardGame, customGame;
+    private JMenuItem leaderboard;
     private TileView[][] tiles;
     private JPanel world = new JPanel();
     private JPanel timerPanel = new JPanel();
@@ -46,7 +47,13 @@ public class MinesweeperView implements IGameStateNotifier {
         this.menuBar = new JMenuBar();
         this.gameMenu = new JMenu("New Game");
         this.menuBar.add(gameMenu);
-        
+
+        this.leaderboard = new JMenuItem("Leaderboard");
+        this.menuBar.add(leaderboard);
+        this.leaderboard.addActionListener((ActionEvent e) -> {
+            this.showLeaderBoard();
+        });
+
         this.easyGame = new JMenuItem("Easy");
         this.gameMenu.add(this.easyGame);
         this.easyGame.addActionListener((ActionEvent e) -> {
@@ -65,7 +72,10 @@ public class MinesweeperView implements IGameStateNotifier {
             if (gameModel != null)
                 gameModel.startNewGame(Difficulty.HARD);
         });
-        
+
+        this.customGame = new JMenuItem("Custom");
+        this.gameMenu.add(this.customGame);
+
         this.window.setJMenuBar(this.menuBar);
 
         try {
@@ -182,14 +192,6 @@ public class MinesweeperView implements IGameStateNotifier {
         this.jOptionPane.showMessageDialog(this.jOptionPane,"You won!");
     }
 
-    private void removeAllTileEvents() {
-        for (int i=0; i<this.tiles.length; ++i) {
-            for (int j = 0; j < this.tiles[i].length; ++j) {
-                this.tiles[i][j].removalAllMouseListeners();
-            }
-        }
-    }
-
     @Override
     public void notifyFlagCountChanged(int newFlagCount) {
         this.flagCountView.setText(Integer.toString(newFlagCount));
@@ -222,4 +224,26 @@ public class MinesweeperView implements IGameStateNotifier {
         this.tiles[y][x].notifyExplode();
     }
 
+    private void removeAllTileEvents() {
+        for (int i=0; i<this.tiles.length; ++i) {
+            for (int j = 0; j < this.tiles[i].length; ++j) {
+                this.tiles[i][j].removalAllMouseListeners();
+            }
+        }
+    }
+
+    private void showLeaderBoard() {
+        this.gameModel.clearGame();
+
+        this.window.remove(this.timerPanel);
+        this.window.remove(this.flagPanel);
+
+        this.window.setSize(10 * TILE_SIZE, 10 * TILE_SIZE + 30);
+        this.world.removeAll();
+
+        this.world.setLayout(new GridLayout(10, 10));
+        this.world.setVisible(false);
+        this.world.setVisible(true);
+        this.world.repaint();
+    }
 }

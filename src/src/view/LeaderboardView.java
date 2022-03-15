@@ -18,7 +18,7 @@ public class LeaderboardView {
                 BorderFactory.createEtchedBorder(), VIEW_NAME, TitledBorder.CENTER, TitledBorder.TOP));
 
         // Read the data from the file
-        var dataFromJson = (ILeaderboard) FileHelper.readFileFromJson(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
+        var dataFromJson = (ILeaderboard) FileHelper.readDataFromFile(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
 
         var scoreTables = dataFromJson.getScoreTables();
         String[][] data = new String[Common.MAXIMUM_RESULTS_PER_COLUMN][scoreTables.size()];

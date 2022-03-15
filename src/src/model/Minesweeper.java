@@ -429,14 +429,14 @@ public class Minesweeper extends AbstractMineSweeper {
         FileHelper.createFile(Common.LEADERBOARD_FILE_NAME);
 
         // Read the data from the file
-        var data = (ILeaderboard)FileHelper.readFileFromJson(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
+        var data = (ILeaderboard)FileHelper.readDataFromFile(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
 
         // Update the data
         String username = System.getProperty(Common.USERNAME_PROPERTY);
         data.addNewScore(this.difficulty, username, this.timer.getTimeAsString());
 
         // Write the data to the file
-        FileHelper.writeFileToJson(data);
+        FileHelper.writeDataToFile(Common.LEADERBOARD_FILE_NAME, data);
     }
 
     private boolean isGameWon() {

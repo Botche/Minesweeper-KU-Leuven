@@ -14,7 +14,7 @@ public final class FileHelper {
 
     public static void createFile(String filePath) {
         try {
-            File leaderboard = new File(Common.LEADERBOARD_FILE_NAME);
+            File leaderboard = new File(filePath);
             leaderboard.createNewFile();
         } catch (IOException ioe) {
             System.out.println(ERROR_MESSAGE);
@@ -39,9 +39,9 @@ public final class FileHelper {
         return data;
     }
 
-    public static <T> void writeFileToJson(T data) {
+    public static <T> void writeDataToFile(String filePath, T data) {
         try {
-            FileWriter writer = new FileWriter(Common.LEADERBOARD_FILE_NAME);
+            FileWriter writer = new FileWriter(filePath);
             writer.append(gson.toJson(data));
             writer.close();
         } catch (IOException ioe) {

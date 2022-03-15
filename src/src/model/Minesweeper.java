@@ -100,6 +100,11 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     @Override
+    public void clearGame() {
+        this.timer.cancel();
+    }
+
+    @Override
     public void setWorld(AbstractTile[][] world) {
         int rowBoardDimension = world.length;
         int colBoardDimension = world[0].length;
@@ -217,16 +222,6 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     @Override
-    public void clearGame() {
-        this.timer.cancel();
-    }
-
-    @Override
-    public void deactivateFirstTileRule() {
-        this.setFirstTimeRuleEnabled(false);
-    }
-
-    @Override
     public AbstractTile generateEmptyTile() {
         Empty emptyTile = new Empty();
 
@@ -238,6 +233,11 @@ public class Minesweeper extends AbstractMineSweeper {
         Explosive explosiveTile = new Explosive();
 
         return explosiveTile;
+    }
+
+    @Override
+    public void deactivateFirstTileRule() {
+        this.setFirstTimeRuleEnabled(false);
     }
 
     private void initializeGameBoard(@NotNull Difficulty difficulty) {
@@ -348,37 +348,6 @@ public class Minesweeper extends AbstractMineSweeper {
         return explosiveNeighboursCount;
     }
 
-    private boolean areCoordinatesInvalid(int x, int y) {
-        boolean isXInvalid = Validator.isPositive(x) == false
-                || Validator.isGreaterThan(x, this.getWidth() - 1);
-
-        boolean isYInvalid = Validator.isPositive(y) == false
-                || Validator.isGreaterThan(y, this.getHeight() - 1);
-
-        return isXInvalid || isYInvalid;
-    }
-
-    private boolean isGameWon() {
-        int numberOfRows = this.getHeight();
-        int numberOfColumns = this.getWidth();
-
-        boolean isAllEmptyTilesAreOpen = true;
-
-        rowloop:
-        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
-            for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
-                var tile = this.gameBoard[rowIndex][colIndex];
-
-                if (tile.isOpened() == false && tile.isExplosive() == false) {
-                    isAllEmptyTilesAreOpen = false;
-                    break rowloop;
-                }
-            }
-        }
-
-        return isAllEmptyTilesAreOpen;
-    }
-
     private void openAllTilesWithZeroExplosiveNeighbours(int tileRow, int tileCol) {
         int numberOfRows = this.getHeight();
         int numberOfColumns = this.getWidth();
@@ -410,6 +379,23 @@ public class Minesweeper extends AbstractMineSweeper {
         }
     }
 
+    private void showAllMines() {
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
+
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+            for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
+                AbstractTile tile = this.gameBoard[rowIndex][colIndex];
+
+                if (tile.isExplosive() == false) {
+                    continue;
+                }
+
+                this.viewNotifier.notifyExploded(colIndex, rowIndex);
+            }
+        }
+    }
+
     private void startTimer() {
         long startingTime = System.currentTimeMillis();
         TimerTask task = new TimerTask() {
@@ -428,23 +414,6 @@ public class Minesweeper extends AbstractMineSweeper {
         this.timer.startTimer(delay, duration, task);
     }
 
-    private void showAllMines() {
-        int numberOfRows = this.getHeight();
-        int numberOfColumns = this.getWidth();
-
-        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
-            for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
-                AbstractTile tile = this.gameBoard[rowIndex][colIndex];
-
-                if (tile.isExplosive() == false) {
-                    continue;
-                }
-
-                this.viewNotifier.notifyExploded(colIndex, rowIndex);
-            }
-        }
-    }
-    
     private void saveGameTime() {
         if (this.difficulty == null) {
             return;
@@ -462,5 +431,36 @@ public class Minesweeper extends AbstractMineSweeper {
 
         // Write the data to the file
         FileHelper.writeFileToJson(data);
+    }
+
+    private boolean isGameWon() {
+        int numberOfRows = this.getHeight();
+        int numberOfColumns = this.getWidth();
+
+        boolean isAllEmptyTilesAreOpen = true;
+
+        rowloop:
+        for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+            for (int colIndex = 0; colIndex < numberOfColumns; colIndex++) {
+                var tile = this.gameBoard[rowIndex][colIndex];
+
+                if (tile.isOpened() == false && tile.isExplosive() == false) {
+                    isAllEmptyTilesAreOpen = false;
+                    break rowloop;
+                }
+            }
+        }
+
+        return isAllEmptyTilesAreOpen;
+    }
+
+    private boolean areCoordinatesInvalid(int x, int y) {
+        boolean isXInvalid = Validator.isPositive(x) == false
+                || Validator.isGreaterThan(x, this.getWidth() - 1);
+
+        boolean isYInvalid = Validator.isPositive(y) == false
+                || Validator.isGreaterThan(y, this.getHeight() - 1);
+
+        return isXInvalid || isYInvalid;
     }
 }

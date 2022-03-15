@@ -248,6 +248,7 @@ public class MinesweeperView implements IGameStateNotifier {
         this.clearTheWindow();
 
         this.window.remove(this.leaderboardView);
+        this.leaderboardView = LeaderboardView.generateView();
         this.window.add(this.leaderboardView);
         this.window.setVisible(true);
     }

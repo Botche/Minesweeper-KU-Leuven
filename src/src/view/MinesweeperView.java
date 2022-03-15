@@ -20,9 +20,9 @@ public class MinesweeperView implements IGameStateNotifier {
     public static final int MAX_TIME = 1;//in minutes
     public static final int TILE_SIZE = 50;
     public static final class AssetPath {
-        public static final String CLOCK_ICON = "./src/assets/icons/clock.png";
-        public static final String FLAG_ICON = "./src/assets/icons/flag.png";
-        public static final String BOMB_ICON = "./src/assets/icons/bomb.png";
+        public static final String CLOCK_ICON = "/icons/clock.png";
+        public static final String FLAG_ICON = "/icons/flag.png";
+        public static final String BOMB_ICON = "/icons/bomb.png";
     }
     private PlayableMinesweeper gameModel;
     private JFrame window;

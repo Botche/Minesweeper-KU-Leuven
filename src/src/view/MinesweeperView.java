@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -77,8 +76,10 @@ public class MinesweeperView implements IGameStateNotifier {
         this.window.setJMenuBar(this.menuBar);
 
         try {
-            JLabel clockIcon = new JLabel(new ImageIcon(ImageIO.read(new File(AssetPath.CLOCK_ICON))));
+            ImageIcon clockImage = new ImageIcon(ImageIO.read(getClass().getResource(AssetPath.CLOCK_ICON)));
+            JLabel clockIcon = new JLabel(clockImage);
             clockIcon.setSize(new DimensionUIResource(10, 10));
+
             timerPanel.add(clockIcon);
             timerPanel.add(new JLabel("TIME ELAPSED: "));
             timerPanel.add(this.timerView);
@@ -87,9 +88,11 @@ public class MinesweeperView implements IGameStateNotifier {
         }
         flagPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         try {
-            JLabel clockIcon = new JLabel(new ImageIcon(ImageIO.read(new File(AssetPath.FLAG_ICON))));
-            clockIcon.setSize(new DimensionUIResource(10, 10));
-            flagPanel.add(clockIcon);
+            ImageIcon flagImage = new ImageIcon(ImageIO.read(getClass().getResource(AssetPath.FLAG_ICON)));
+            JLabel flagIcon = new JLabel(flagImage);
+            flagIcon.setSize(new DimensionUIResource(10, 10));
+
+            flagPanel.add(flagIcon);
             flagPanel.add(new JLabel("FLAG: "));
             flagPanel.add(this.flagCountView);
         } catch (IOException e) {

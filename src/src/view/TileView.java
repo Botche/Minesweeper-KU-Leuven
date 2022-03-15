@@ -1,14 +1,33 @@
 package view;
 
 import notifier.ITileStateNotifier;
+import utilities.constants.Common;
 import view.MinesweeperView.AssetPath;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 
 public class TileView extends JButton implements ITileStateNotifier {
-    private static ImageIcon flagIcon = new ImageIcon(AssetPath.FLAG_ICON);
-    private static ImageIcon bombIcon = new ImageIcon(AssetPath.BOMB_ICON);
+    private static ImageIcon flagIcon;
+    private static ImageIcon bombIcon;
+
+    static {
+        try {
+            flagIcon = new ImageIcon(ImageIO.read(TileView.class.getResource(AssetPath.FLAG_ICON)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static {
+        try {
+            bombIcon = new ImageIcon(ImageIO.read(TileView.class.getResource(AssetPath.BOMB_ICON)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private int x, y;
     public TileView(int x, int y) {

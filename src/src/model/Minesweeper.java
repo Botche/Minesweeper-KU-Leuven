@@ -368,6 +368,10 @@ public class Minesweeper extends AbstractMineSweeper {
 
                 int explosiveNeighboursCount = this.getExplosiveNeighboursCount(row, col);
                 if (neighbourTile.isOpened() == false) {
+                    if (neighbourTile.isFlagged()) {
+                        this.setFlagsCount(++this.flagsCount);
+                    }
+
                     neighbourTile.open();
                     this.viewNotifier.notifyOpened(col, row, explosiveNeighboursCount);
 
@@ -377,6 +381,8 @@ public class Minesweeper extends AbstractMineSweeper {
                 }
             }
         }
+
+        this.viewNotifier.notifyFlagCountChanged(this.flagsCount);
     }
 
     private void showAllMines() {

@@ -37,6 +37,7 @@ public class MinesweeperView implements IGameStateNotifier {
     private JLabel flagCountView = new JLabel();
     private JFrame optionalFrame = new JFrame();
     private JOptionPane jOptionPane = new JOptionPane();
+    private JPanel leaderboardView = LeaderboardView.generateView();
 
     public MinesweeperView() {
         this.window = new JFrame("Minesweeper");
@@ -100,15 +101,9 @@ public class MinesweeperView implements IGameStateNotifier {
         }
 
         this.window.setLayout(new GridBagLayout());
+
+        this.showTimerAndFlagsPanel();
         GridBagConstraints layoutConstraints = new GridBagConstraints();
-        layoutConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-        layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-        layoutConstraints.gridx = 0;
-        layoutConstraints.gridy = 0;
-        this.window.add(timerPanel, layoutConstraints);
-        layoutConstraints.gridx = 1;
-        layoutConstraints.gridy = 0;
-        this.window.add(flagPanel, layoutConstraints);
         layoutConstraints.fill = GridBagConstraints.BOTH;
         layoutConstraints.gridx = 0;
         layoutConstraints.gridy = 1;
@@ -118,7 +113,7 @@ public class MinesweeperView implements IGameStateNotifier {
         this.window.add(world, layoutConstraints);
         this.window.setSize(500, 1);
         this.window.setVisible(true);
-        this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
+        this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
             UIManager.put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -175,6 +170,10 @@ public class MinesweeperView implements IGameStateNotifier {
                 this.world.add(temp);
             }
         }
+        this.window.remove(this.leaderboardView);
+
+        this.showTimerAndFlagsPanel();
+
         this.world.setLayout(new GridLayout(row, col));
         this.world.setVisible(false);
         this.world.setVisible(true);
@@ -184,13 +183,13 @@ public class MinesweeperView implements IGameStateNotifier {
     public void notifyGameLost() {
         this.removeAllTileEvents();
 
-        this.jOptionPane.showMessageDialog(this.jOptionPane,"Game Over!");
+        JOptionPane.showMessageDialog(this.jOptionPane,"Game Over!");
     }
     @Override
     public void notifyGameWon() {
         this.removeAllTileEvents();
 
-        this.jOptionPane.showMessageDialog(this.jOptionPane,"You won!");
+        JOptionPane.showMessageDialog(this.jOptionPane,"You won!");
     }
 
     @Override
@@ -233,11 +232,23 @@ public class MinesweeperView implements IGameStateNotifier {
         }
     }
 
+    private void showTimerAndFlagsPanel() {
+        GridBagConstraints layoutConstraints = new GridBagConstraints();
+        layoutConstraints.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+        layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
+        layoutConstraints.gridx = 0;
+        layoutConstraints.gridy = 0;
+        this.window.add(timerPanel, layoutConstraints);
+        layoutConstraints.gridx = 1;
+        layoutConstraints.gridy = 0;
+        this.window.add(flagPanel, layoutConstraints);
+    }
+
     private void showLeaderBoard() {
         this.clearTheWindow();
 
-        JPanel leaderboardView = LeaderboardView.generateView();
-        this.window.add(leaderboardView);
+        this.window.remove(this.leaderboardView);
+        this.window.add(this.leaderboardView);
         this.window.setVisible(true);
     }
 
@@ -250,7 +261,6 @@ public class MinesweeperView implements IGameStateNotifier {
         this.window.setSize(10 * TILE_SIZE, 10 * TILE_SIZE + 30);
         this.world.removeAll();
 
-        this.world.setLayout(new GridLayout(10, 10));
         this.world.setVisible(false);
         this.world.setVisible(true);
         this.world.repaint();

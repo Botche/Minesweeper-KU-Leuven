@@ -7,7 +7,6 @@ import utilities.constants.Common;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import java.awt.event.MouseListener;
 import java.util.Locale;
 
 public class LeaderboardView {
@@ -29,7 +28,8 @@ public class LeaderboardView {
             header[index] = scoreTable.getDifficulty().name().toLowerCase(Locale.ROOT);
 
             var scores = scoreTable.getScores();
-            for (int scoresIndex = 0; scoresIndex < scores.size(); scoresIndex++) {
+            var scoresMaxIndex = Math.min(scores.size(), 10);
+            for (int scoresIndex = 0; scoresIndex < scoresMaxIndex; scoresIndex++) {
                 var score = scores.get(scoresIndex);
 
                 data[scoresIndex][index] = score.toString();

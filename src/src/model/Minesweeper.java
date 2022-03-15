@@ -1,5 +1,6 @@
 package model;
 
+import model.leaderboard.Leaderboard;
 import model.leaderboard.interfaces.ILeaderboard;
 import model.tiles.AbstractTile;
 import model.tiles.Empty;
@@ -7,14 +8,15 @@ import model.tiles.Explosive;
 import notifier.ITileStateNotifier;
 import org.jetbrains.annotations.NotNull;
 import utilities.FileHelper;
+import utilities.Timer;
 import utilities.constants.Common;
 import utilities.Validator;
 import utilities.constants.ErrorMessages;
+import utilities.interfaces.ITimer;
 import view.TileView;
 
 import java.time.Duration;
 import java.util.Random;
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class Minesweeper extends AbstractMineSweeper {
@@ -24,8 +26,7 @@ public class Minesweeper extends AbstractMineSweeper {
     private AbstractTile[][] gameBoard;
     private boolean isFirstTimeRuleEnabled = true;
     private int flagsCount;
-    private Timer timer;
-    private String timeAsString;
+    private ITimer timer = new Timer();
     private Difficulty difficulty;
 
     @Override
@@ -411,26 +412,21 @@ public class Minesweeper extends AbstractMineSweeper {
     }
 
     private void startTimer() {
-        if (this.timer != null) {
-            this.timer.cancel();
-        }
-
         long startingTime = System.currentTimeMillis();
-        long delay = 0;
-        long period = 1000;
-
-        this.timer = new Timer();
-        this.timer.scheduleAtFixedRate(new TimerTask() {
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 long currentTime = System.currentTimeMillis();
 
                 Duration duration = Duration.ofMillis(currentTime - startingTime);
                 viewNotifier.notifyTimeElapsedChanged(duration);
-                timeAsString = String.format("%d:%02d", duration.toMinutesPart(), duration.toSecondsPart());
-
+                timer.setTimeAsString(duration);
             }
-        }, delay, period);
+        };
+
+        long delay = 0;
+        long duration = 1000;
+        this.timer.startTimer(delay, duration, task);
     }
 
     private void showAllMines() {
@@ -459,11 +455,11 @@ public class Minesweeper extends AbstractMineSweeper {
         FileHelper.createFile(Common.LEADERBOARD_FILE_NAME);
 
         // Read the data from the file
-        var data = (ILeaderboard)FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME);
+        var data = (ILeaderboard)FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
 
         // Update the data
         String username = System.getProperty(Common.USERNAME_PROPERTY);
-        data.addNewScore(this.difficulty, username, this.timeAsString);
+        data.addNewScore(this.difficulty, username, this.timer.getTimeAsString());
 
         // Write the data to the file
         FileHelper.writeFileToJson(data);

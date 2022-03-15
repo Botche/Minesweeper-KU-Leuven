@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GameMode implements IGameMode {
     private Difficulty difficulty;
-    private List<IPlayerScore> scores;
+    private List<PlayerScore> scores;
 
     public GameMode(Difficulty difficulty) {
         this.setDifficulty(difficulty);
@@ -25,11 +25,11 @@ public class GameMode implements IGameMode {
         this.difficulty = difficulty;
     }
 
-    public List<IPlayerScore> getScores() {
+    public List<PlayerScore> getScores() {
         return scores;
     }
 
-    private void setScores(List<IPlayerScore> scores) {
+    private void setScores(List<PlayerScore> scores) {
         this.scores = scores;
     }
 

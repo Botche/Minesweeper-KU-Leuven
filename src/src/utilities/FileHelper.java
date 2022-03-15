@@ -22,12 +22,12 @@ public final class FileHelper {
         }
     }
 
-    public static <T> T readFileToJson(String filePath) {
+    public static <T> T readFileToJson(String filePath, Class objectClass) {
         T data = null;
 
         try {
             FileReader reader = new FileReader(filePath);
-            data = (T)gson.fromJson(reader, data.getClass());
+            data = (T)gson.fromJson(reader, objectClass);
             reader.close();
 
             return data;

@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Leaderboard implements ILeaderboard {
-    private List<IGameMode> scoreTables;
+    private List<GameMode> scoreTables;
 
-    public List<IGameMode> getScoreTables() {
+    public List<GameMode> getScoreTables() {
         return this.scoreTables;
     }
 
     public Leaderboard() {
-        this.scoreTables = new ArrayList<IGameMode>();
+        this.scoreTables = new ArrayList<GameMode>();
         this.scoreTables.add(new GameMode(Difficulty.EASY));
         this.scoreTables.add(new GameMode(Difficulty.MEDIUM));
         this.scoreTables.add(new GameMode(Difficulty.HARD));

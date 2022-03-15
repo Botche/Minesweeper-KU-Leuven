@@ -1,5 +1,6 @@
 package view;
 
+import model.leaderboard.Leaderboard;
 import model.leaderboard.interfaces.ILeaderboard;
 import utilities.FileHelper;
 import utilities.constants.Common;
@@ -17,7 +18,7 @@ public class LeaderboardView {
                 BorderFactory.createEtchedBorder(), VIEW_NAME, TitledBorder.CENTER, TitledBorder.TOP));
 
         // Read the data from the file
-        var dataFromJson = (ILeaderboard) FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME);
+        var dataFromJson = (ILeaderboard) FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
 
         var scoreTables = dataFromJson.getScoreTables();
         String[][] data = new String[Common.MAXIMUM_RESULTS_PER_COLUMN][scoreTables.size()];

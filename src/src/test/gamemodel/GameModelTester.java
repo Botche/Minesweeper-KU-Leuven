@@ -1,24 +1,19 @@
 package test.gamemodel;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import model.Minesweeper;
+import model.tiles.AbstractTile;
+import notifier.IGameStateNotifier;
+import notifier.ITileStateNotifier;
+import org.junit.Before;
+import org.junit.Test;
+import test.TestableMinesweeper;
+import test.TestableTile;
 
 import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import model.Minesweeper;
-import org.junit.Before;
-import org.junit.Test;
-
-import model.tiles.AbstractTile;
-//import model.Minesweeper;
-import notifier.IGameStateNotifier;
-import notifier.ITileStateNotifier;
-import test.TestableMinesweeper;
-import test.TestableTile;
+import static org.junit.Assert.*;
 
 public class GameModelTester {
     private static final int X=0, Y=1;

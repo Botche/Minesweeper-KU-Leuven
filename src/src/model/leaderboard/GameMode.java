@@ -2,7 +2,6 @@ package model.leaderboard;
 
 import model.Difficulty;
 import model.leaderboard.interfaces.IGameMode;
-import model.leaderboard.interfaces.IPlayerScore;
 import utilities.constants.Common;
 
 import java.util.ArrayList;

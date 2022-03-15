@@ -1,7 +1,7 @@
 package test;
 
-import model.tiles.AbstractTile;
 import model.PlayableMinesweeper;
+import model.tiles.AbstractTile;
 
 public interface TestableMinesweeper extends PlayableMinesweeper {
     AbstractTile getTile(int x, int y);

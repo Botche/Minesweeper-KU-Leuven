@@ -1,30 +1,20 @@
 package view;
 
-import com.google.gson.Gson;
 import model.Difficulty;
 import model.PlayableMinesweeper;
+import notifier.IGameStateNotifier;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
-import java.awt.event.ActionEvent;
-import java.util.Locale;
-
-import model.leaderboard.Leaderboard;
-import notifier.IGameStateNotifier;
-import utilities.FileHelper;
-import utilities.constants.Common;
 
 public class MinesweeperView implements IGameStateNotifier {
     public static final int MAX_TIME = 1;//in minutes

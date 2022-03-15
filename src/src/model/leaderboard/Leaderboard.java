@@ -1,7 +1,6 @@
 package model.leaderboard;
 
 import model.Difficulty;
-import model.leaderboard.interfaces.IGameMode;
 import model.leaderboard.interfaces.ILeaderboard;
 
 import java.util.ArrayList;

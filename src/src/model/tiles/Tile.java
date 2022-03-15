@@ -1,7 +1,5 @@
 package model.tiles;
 
-import notifier.ITileStateNotifier;
-
 public abstract class Tile extends AbstractTile {
     private boolean isFlagged;
     private boolean isExplosive;

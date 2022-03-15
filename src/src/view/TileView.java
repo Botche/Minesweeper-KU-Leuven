@@ -1,11 +1,10 @@
 package view;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.event.MouseListener;
-
 import notifier.ITileStateNotifier;
 import view.MinesweeperView.AssetPath;
+
+import javax.swing.*;
+import java.awt.event.MouseListener;
 
 public class TileView extends JButton implements ITileStateNotifier {
     private static ImageIcon flagIcon = new ImageIcon(AssetPath.FLAG_ICON);

@@ -22,7 +22,7 @@ public final class FileHelper {
         }
     }
 
-    public static <T> T readFileToJson(String filePath, Class objectClass) {
+    public static <T> T readFileFromJson(String filePath, Class objectClass) {
         T data = null;
 
         try {

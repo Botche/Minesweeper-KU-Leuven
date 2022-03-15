@@ -423,7 +423,7 @@ public class Minesweeper extends AbstractMineSweeper {
         FileHelper.createFile(Common.LEADERBOARD_FILE_NAME);
 
         // Read the data from the file
-        var data = (ILeaderboard)FileHelper.readFileToJson(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
+        var data = (ILeaderboard)FileHelper.readFileFromJson(Common.LEADERBOARD_FILE_NAME, Leaderboard.class);
 
         // Update the data
         String username = System.getProperty(Common.USERNAME_PROPERTY);

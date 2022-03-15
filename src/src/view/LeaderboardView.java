@@ -7,6 +7,7 @@ import utilities.constants.Common;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import java.awt.event.MouseListener;
 import java.util.Locale;
 
 public class LeaderboardView {
@@ -36,6 +37,10 @@ public class LeaderboardView {
         }
 
         JTable table = new JTable(data, header);
+        table.setEnabled(false);
+        table.setDragEnabled(false);
+        table.getTableHeader().setReorderingAllowed(false);
+
         panel.add(new JScrollPane(table));
 
         return panel;

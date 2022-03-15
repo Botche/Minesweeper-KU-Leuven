@@ -306,10 +306,9 @@ public class Minesweeper extends AbstractMineSweeper {
             int colIndex = randomGenerator.nextInt(this.getWidth());
 
             AbstractTile tile = this.gameBoard[rowIndex][colIndex];
-            String tileName = tile.getClass().getSimpleName();
 
             boolean isPositionOnExclusiveCoordinates = rowIndex == exclusiveRowIndex && colIndex == exclusiveColIndex;
-            if (tileName.equals("Explosive") || isPositionOnExclusiveCoordinates) {
+            if (tile.isExplosive() || isPositionOnExclusiveCoordinates) {
                 continue;
             }
 

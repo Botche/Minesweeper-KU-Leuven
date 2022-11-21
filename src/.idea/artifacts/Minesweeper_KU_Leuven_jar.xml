@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact name="Minesweeper-KU-Leuven:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Minesweeper_KU_Leuven_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Minesweeper-KU-Leuven.jar">
+        <element id="module-output" name="Minesweeper-KU-Leuven" />
+      </element>
+      <element id="library" level="module" name="JUnit4" module-name="Minesweeper-KU-Leuven" />
+      <element id="library" level="project" name="google.code.gson" />
+      <element id="file-copy" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar" />
+      <element id="dir-copy" path="$PROJECT_DIR$/assets" />
+      <element id="file-copy" path="$PROJECT_DIR$/leaderboard.json" />
+    </root>
+  </artifact>
+</component>
